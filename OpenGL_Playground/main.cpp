@@ -18,10 +18,14 @@ int main()
         return -1;
     }
 
+	
+
+
     // OpenGL version
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
+
 
     // Create window
     GLFWwindow* window = glfwCreateWindow(800, 600, "OpenGL Reset", nullptr, nullptr);
@@ -35,6 +39,7 @@ int main()
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
+
     // Load OpenGL
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
@@ -43,6 +48,9 @@ int main()
     }
 
     float lastTime = glfwGetTime();
+
+    // Set point size
+    glPointSize(10.0f);
 
     // Main loop
     while (!glfwWindowShouldClose(window))
@@ -67,6 +75,16 @@ int main()
 		// Clear the screen with the computed color
 		glClearColor(red, green, blue, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+
+		// Draw a point in the center of the screen
+        glBegin(GL_POINTS);
+        glVertex2f(0.0f, 0.0f); // centre of screen
+        glEnd();
+
+        GLenum err = glGetError();
+        if (err != GL_NO_ERROR) {
+            std::cout << "OpenGL error: " << err << "\n";
+        }
 
         glfwSwapBuffers(window);
     }
