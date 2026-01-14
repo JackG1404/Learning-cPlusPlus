@@ -42,13 +42,21 @@ int main()
         return -1;
     }
 
+    float lastTime = glfwGetTime();
+
     // Main loop
     while (!glfwWindowShouldClose(window))
     {
         glfwPollEvents();
 
+		// Calculate delta time
+        float currentTime = glfwGetTime();
+        float deltaTime = currentTime - lastTime;
+        lastTime = currentTime;
+
+
 		// Update time
-		time += 0.01f;
+		time += deltaTime;
 
 		// Clear screen with three colors that changes over time, using sine and cosine functions as they are offset which means a blend between the two colors
 		float red = (sin(time) + 1.0f) / 2.0f;
