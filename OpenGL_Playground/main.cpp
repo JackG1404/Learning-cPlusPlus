@@ -50,7 +50,7 @@ int main()
     float lastTime = glfwGetTime();
 
     // Set point size
-    glPointSize(10.0f);
+    glPointSize(100.0f);
 
     // Main loop
     while (!glfwWindowShouldClose(window))
@@ -70,13 +70,18 @@ int main()
 		float red = (sin(time) + 1.0f) / 2.0f;
         float green = (cos(time) + 1.0f) / 2.0f;
         float blue = (sin(time + 2.0f) + 1.0f) / 2.0f;
+
+        float squareRed = (sin(time + 0.4f) + 1.0f) / 2.0f;
+        float squareGreen = (cos(time + 0.4f) + 1.0f) / 2.0f;
+        float squareBlue = (sin(time + 2.4f) + 1.0f) / 2.0f;
 		// We add 1 and divide by 2 to ensure the values are between 0 and 1, as sine and cosine functions return values between -1 and 1, which are not valid for color components
 
 		// Clear the screen with the computed color
-		glClearColor(red, green, blue, 1.0f);
+		glClearColor(red, green, blue, 0.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
 		// Draw a point in the center of the screen
+		glColor3f(squareRed, squareGreen, squareBlue);
         glBegin(GL_POINTS);
         glVertex2f(0.0f, 0.0f); // centre of screen
         glEnd();
