@@ -1,35 +1,33 @@
-#include <glad/glad.h>
+﻿#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
 
-// Callback: called when the window is resized
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
 }
 
-// Main entry point for the program
 int main()
 {
-    // --------------------------------------------------
-    // 1) Initialise GLFW
-    // --------------------------------------------------
-    if (!glfwInit()) {
-        std::cerr << "Failed to initialize GLFW\n";
+    float time = 0.0f;
+
+    // Init GLFW
+    if (!glfwInit())
+    {
+        std::cerr << "Failed to init GLFW\n";
         return -1;
     }
 
-    // Tell GLFW we want modern OpenGL (3.3 Core)
+    // OpenGL version
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    // --------------------------------------------------
-    // 2) Create window
-    // --------------------------------------------------
-    GLFWwindow* window = glfwCreateWindow(800, 600, "OpenGL Playground", nullptr, nullptr);
-    if (!window) {
-        std::cerr << "Failed to create GLFW window\n";
+    // Create window
+    GLFWwindow* window = glfwCreateWindow(800, 600, "OpenGL Reset", nullptr, nullptr);
+    if (!window)
+    {
+        std::cerr << "Failed to create window\n";
         glfwTerminate();
         return -1;
     }
@@ -37,43 +35,34 @@ int main()
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-    // --------------------------------------------------
-    // 3) Load OpenGL functions via GLAD
-    // --------------------------------------------------
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-        std::cerr << "Failed to initialize GLAD\n";
+    // Load OpenGL
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        std::cerr << "Failed to init GLAD\n";
         return -1;
     }
 
-    // --------------------------------------------------
-    // 4) (Later) OpenGL setup
-    //    - VAOs
-    //    - VBOs
-    //    - Shaders
-    // --------------------------------------------------
-
-
-    // --------------------------------------------------
-    // 5) Render loop
-    // --------------------------------------------------
+    // Main loop
     while (!glfwWindowShouldClose(window))
     {
-        // --- Input & events ---
         glfwPollEvents();
 
-        // --- Rendering ---
-        glClearColor(0.05f, 0.08f, 0.12f, 1.0f);
+		// Update time
+		time += 0.01f;
+
+		// Clear screen with three colors that changes over time, using sine and cosine functions as they are offset which means a blend between the two colors
+		float red = (sin(time) + 1.0f) / 2.0f;
+        float green = (cos(time) + 1.0f) / 2.0f;
+        float blue = (sin(time + 2.0f) + 1.0f) / 2.0f;
+		// We add 1 and divide by 2 to ensure the values are between 0 and 1, as sine and cosine functions return values between -1 and 1, which are not valid for color components
+
+		// Clear the screen with the computed color
+		glClearColor(red, green, blue, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        // (Later) draw calls go here
-
-        // --- Present frame ---
         glfwSwapBuffers(window);
     }
 
-    // --------------------------------------------------
-    // 6) Cleanup & exit
-    // --------------------------------------------------
     glfwTerminate();
     return 0;
 }
